@@ -1,6 +1,5 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * Jason
  *
  * @format
  * @flow
@@ -23,13 +22,11 @@ import moment from 'moment';
 export default class App extends Component {
   constructor(props){
     super(props);
-    //props.addTime = addTime;
     this.state = { times: []}
     this.dataKey = 'times';
   }
 
   async componentDidMount() {
-    //await AsyncStorage.setItem(this.dataKey, JSON.stringify([]));
     await this.updateState();
   }
   
@@ -40,7 +37,6 @@ export default class App extends Component {
 
   async setNewState(data)
   {
-    //var clone = data.slice(0);
     this.setState({ times: _.orderBy(data, ['time'], ['desc'])});
   }
   
