@@ -18,7 +18,7 @@ export default class DayInfo extends Component {
         <Text style={styles.day}>Day{"\n"}{this.props.day}</Text>
         <View>
           {this.orderTimes().map((time) =>
-          <Text key={time.time} style={styles.startTime}>
+          <Text key={time.time} style={styles.time}>
             {this.formatTime(time.time)} {this.getEmoji(time.type)} {time.type}
           </Text>)} 
         </View>
@@ -65,14 +65,15 @@ const styles = StyleSheet.create({
     padding: 10
   },
   day: {
-    fontSize: 40
+    fontSize: 40,
+    color: 'black',
+    fontFamily: 'Roboto-Thin'
   },
   count: {
-    fontSize: 30
+    fontSize: 30,
+    color: 'black'
   },
-  currentDay: {
-    backgroundColor: '#039BE5',
-    alignSelf: 'stretch',
-    padding: 10,
+  time: {
+    color: 'black'
   },
 });

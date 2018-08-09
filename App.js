@@ -68,7 +68,7 @@ export default class App extends Component {
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#3F6B9C"/>
-        <View style={styles.currentDay}>
+        <View style={styles.topBar}>
           <Text style={styles.header}>
             Next feeding 11:15
           </Text>
@@ -90,7 +90,7 @@ export default class App extends Component {
             accessibilityLabel="Learn more about this purple button"
           />
         </View>
-        <ScrollView contentContainerStyle={styles.times}>
+        <ScrollView>
           {this.getDays().map((key) =>
             <DayInfo key={key} day={parseInt(key)+1} times={this.state.times[key]}></DayInfo>)}
         </ScrollView>
@@ -142,9 +142,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 10
   },
-  times: {
-  },
-  currentDay: {
+  topBar: {
     backgroundColor: '#039BE5',
     alignSelf: 'stretch',
     padding: 10,
