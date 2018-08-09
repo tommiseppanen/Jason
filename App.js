@@ -33,6 +33,7 @@ export default class App extends Component {
   
   async updateState() {  
     const data = await this.readData();
+    let test = this.groupByDate(data);
     this.setNewState(data);
   }
 
@@ -55,7 +56,10 @@ export default class App extends Component {
   }
 
   groupByDate(data) {
-    //_.groupBy(data, value => );
+    return _.groupBy(data, value => {
+      var duration = moment.duration(moment(value.time).diff(this.birthTime));
+      return Math.floor(duration.asHours() / 24);
+    });
   }
 
 
