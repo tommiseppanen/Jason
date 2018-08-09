@@ -13,6 +13,31 @@ export default class DayInfo extends Component {
     //this.state = { times: []}
   }
 
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.day}>Day {this.props.day}</Text>
+        <View>
+          {this.orderTimes().map((time) =>
+          <Text key={time.time} style={styles.startTime}>
+            {this.formatTime(time.time)} {this.getEmoji(time.type)} {time.type}
+          </Text>)} 
+        </View>
+        <View>
+          <Text style={styles.count}>🍼 {this.getCount("food")}</Text>
+          <Text style={styles.count}>💧 {this.getCount("pee")}</Text>
+          <Text style={styles.count}>💩 {this.getCount("poo")}</Text>
+        </View>
+      </View>
+      
+      
+    );
+  }
+
+  orderTimes() {
+    return _.orderBy(this.props.times, ['time'], ['desc']);
+  }
+
   formatTime(time) {
     return moment(time).format('HH:mm');
   }
@@ -28,25 +53,8 @@ export default class DayInfo extends Component {
     return "";  
   }
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.day}>Day {this.props.day}</Text>
-        <View>
-          {this.props.times.map((time) =>
-          <Text key={time.time} style={styles.startTime}>
-            {this.formatTime(time.time)} {this.getEmoji(time.type)} {time.type}
-          </Text>)} 
-        </View>
-        <View>
-          <Text style={styles.count}>🍼 10</Text>
-          <Text style={styles.count}>💧 10</Text>
-          <Text style={styles.count}>💩 10</Text>
-        </View>
-      </View>
-      
-      
-    );
+  getCount(type) {
+    return _.filter(this.props.times, (t) => { if (t.type === type) return t }).length;
   }
 }
 
@@ -54,12 +62,11 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    backgroundColor: '#FFFFFF',
     flexDirection: 'row',
     padding: 10
   },
   day: {
-    fontSize: 40
+    fontSize: 40,
   },
   count: {
     fontSize: 30

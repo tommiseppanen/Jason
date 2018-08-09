@@ -19,12 +19,14 @@ import {
 import _ from 'lodash';
 import moment from 'moment';
 
+import DayInfo from './DayInfo';
+
 export default class App extends Component {
   constructor(props){
     super(props);
-    this.state = { times: []}
+    this.state = { times: {}}
     this.dataKey = 'times';
-    
+    this.birthTime = new moment(new Date(2000, 1, 2, 3, 4));
   }
 
   async componentDidMount() {
@@ -33,12 +35,12 @@ export default class App extends Component {
   
   async updateState() {  
     const data = await this.readData();
-    let test = this.groupByDate(data);
     this.setNewState(data);
   }
 
   async setNewState(data) {
-    this.setState({ times: _.orderBy(data, ['time'], ['desc'])});
+    const grouped = this.groupByDate(data);
+    this.setState({ times: grouped});
   }
   
   async readData() {
@@ -49,7 +51,7 @@ export default class App extends Component {
         data = JSON.parse(value); 
       }
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
   
     return data;
@@ -60,42 +62,6 @@ export default class App extends Component {
       var duration = moment.duration(moment(value.time).diff(this.birthTime));
       return Math.floor(duration.asHours() / 24);
     });
-  }
-
-
-  async food() {
-    await this.addTime("food");
-  }
-
-  async pee() {
-    await this.addTime("pee");
-  }
-
-  async poo() {
-    await this.addTime("poo");
-  }
-
-  async addTime(type) {
-    let data = await this.readData();
-    const currentTimeJson = new Date().toJSON(); 
-    data.push({type: type, time: currentTimeJson});
-    this.setNewState(data);
-    await AsyncStorage.setItem(this.dataKey, JSON.stringify(data));
-  }
-
-  formatTime(time) {
-     return moment(time).format('HH:mm');
-  }
-
-  getEmoji(type) {
-    if (type === "food")
-      return "🍼";
-    else if (type === "pee")
-      return "💧";
-    else if (type === "poo")
-      return "💩";
-
-    return "";  
   }
 
   render() {
@@ -128,16 +94,40 @@ export default class App extends Component {
           />
         </View>
         <ScrollView contentContainerStyle={styles.times}>
-          {this.state.times.map((time) =>
-            <Text key={time.time} style={styles.startTime}>
-            {this.formatTime(time.time)} {this.getEmoji(time.type)} {time.type}
-            </Text>
-          )}
+          {this.getDays().map((key) =>
+            <DayInfo key={key} day={key} times={this.state.times[key]}></DayInfo>)}
         </ScrollView>
         
         
       </View>
     );
+  }
+
+  getDays() {
+    var days = Object.keys(this.state.times);
+    days.sort();
+    days.reverse();
+    return days;
+  }
+
+  async food() {
+    await this.addTime("food");
+  }
+
+  async pee() {
+    await this.addTime("pee");
+  }
+
+  async poo() {
+    await this.addTime("poo");
+  }
+
+  async addTime(type) {
+    let data = await this.readData();
+    const currentTimeJson = new Date().toJSON(); 
+    data.push({type: type, time: currentTimeJson});
+    this.setNewState(data);
+    await AsyncStorage.setItem(this.dataKey, JSON.stringify(data));
   }
 }
 
