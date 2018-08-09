@@ -10,13 +10,12 @@ import moment from 'moment';
 export default class DayInfo extends Component {
   constructor(props){
     super(props);
-    //this.state = { times: []}
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.day}>Day {this.props.day}</Text>
+        <Text style={styles.day}>Day{"\n"}{this.props.day}</Text>
         <View>
           {this.orderTimes().map((time) =>
           <Text key={time.time} style={styles.startTime}>
@@ -66,7 +65,7 @@ const styles = StyleSheet.create({
     padding: 10
   },
   day: {
-    fontSize: 40,
+    fontSize: 40
   },
   count: {
     fontSize: 30
