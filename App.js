@@ -24,6 +24,7 @@ export default class App extends Component {
     super(props);
     this.state = { times: []}
     this.dataKey = 'times';
+    
   }
 
   async componentDidMount() {
@@ -35,13 +36,11 @@ export default class App extends Component {
     this.setNewState(data);
   }
 
-  async setNewState(data)
-  {
+  async setNewState(data) {
     this.setState({ times: _.orderBy(data, ['time'], ['desc'])});
   }
   
-  async readData()
-  {
+  async readData() {
     let data = [];
     try {            
       const value = await AsyncStorage.getItem(this.dataKey);
@@ -55,23 +54,24 @@ export default class App extends Component {
     return data;
   }
 
-  async food()
-  {
+  groupByDate(data) {
+    //_.groupBy(data, value => );
+  }
+
+
+  async food() {
     await this.addTime("food");
   }
 
-  async pee()
-  {
+  async pee() {
     await this.addTime("pee");
   }
 
-  async poo()
-  {
+  async poo() {
     await this.addTime("poo");
   }
 
-  async addTime(type)
-  {
+  async addTime(type) {
     let data = await this.readData();
     const currentTimeJson = new Date().toJSON(); 
     data.push({type: type, time: currentTimeJson});
@@ -79,13 +79,11 @@ export default class App extends Component {
     await AsyncStorage.setItem(this.dataKey, JSON.stringify(data));
   }
 
-  formatTime(time)
-  {
+  formatTime(time) {
      return moment(time).format('HH:mm');
   }
 
-  getEmoji(type)
-  {
+  getEmoji(type) {
     if (type === "food")
       return "🍼";
     else if (type === "pee")
