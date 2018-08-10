@@ -70,7 +70,7 @@ export default class App extends Component {
         <StatusBar backgroundColor="#3F6B9C"/>
         <View style={styles.topBar}>
           <Text style={styles.header}>
-            Next feeding 11:15
+            {this.getNextFeeding()}
           </Text>
         </View>
         <View style={styles.buttonBar}>
@@ -100,8 +100,24 @@ export default class App extends Component {
     );
   }
 
+  getNextFeeding()
+  {
+    let days = this.getDays();
+    if (days.length > 0)
+    {
+      const feedingTimes = 
+        _.filter(this.state.times[days[0]], (t) => { if (t.type === "food") return t });
+      if (feedingTimes.length > 0)
+      {
+        const orderedTimes = _.orderBy(feedingTimes, ['time'], ['desc']);
+        return `Next feeding: ${moment(orderedTimes[0].time).add(4, 'hours').format('HH:mm')}`;
+      }        
+    }
+    return "Welcome!";
+  }
+
   getDays() {
-    var days = Object.keys(this.state.times);
+    let days = Object.keys(this.state.times);
     days.sort();
     days.reverse();
     return days;

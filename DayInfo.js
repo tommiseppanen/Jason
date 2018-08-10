@@ -15,7 +15,7 @@ export default class DayInfo extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.day}>Day{"\n"}{this.props.day}</Text>
+        <Text style={styles.day}>{this.props.day}</Text>
         <View>
           {this.orderTimes().map((time) =>
           <Text key={time.time} style={styles.time}>
@@ -65,9 +65,9 @@ const styles = StyleSheet.create({
     padding: 10
   },
   day: {
-    fontSize: 40,
-    color: 'black',
-    fontFamily: 'Roboto-Thin'
+    fontSize: 80,
+    color: '#00000018',
+    lineHeight: 80
   },
   count: {
     fontSize: 30,
