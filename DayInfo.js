@@ -23,7 +23,7 @@ export default class DayInfo extends Component {
         <View>
           {this.orderTimes().map((time) =>
           <TouchableHighlight key={time.time} onPress={() => navigate('Edit', 
-            { onGoBack: this.props.refresh, time: time })} underlayColor="white">
+            { onGoBack: this.props.refresh, time: time })} underlayColor="#0eaefc">
             <View style={styles.button}>
               <Text style={styles.time}>
                 {this.formatTime(time.time)} {this.getEmoji(time.type)} {time.type}

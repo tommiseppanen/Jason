@@ -23,7 +23,7 @@ export default class EditScreen extends Component {
   constructor(props){
     super(props)
     const date = new moment(this.props.navigation.getParam('time').time);
-    this.state = {date: date, time: date};
+    this.state = {date: date.format('YYYY-MM-DD'), time: date.format('HH:mm')};
   }
 
   render() {
@@ -36,6 +36,7 @@ export default class EditScreen extends Component {
             mode="date"
             date={this.state.date}
             placeholder="Select date"
+            onDateChange={(date) => {this.setState({date: date})}}
           />
           <DatePicker
             style={styles.datePicker}
@@ -43,6 +44,7 @@ export default class EditScreen extends Component {
             format="HH:mm"
             date={this.state.time}
             placeholder="Select time"
+            onDateChange={(time) => {this.setState({time: time})}}
           />
         </View>
         <View style={styles.buttonBar}>
@@ -51,10 +53,8 @@ export default class EditScreen extends Component {
             onPress={this.deleteTime.bind(this)}
           />
           <Button
-            title="Save"
-            onPress={() =>
-              this.props.navigation.goBack()
-            }
+            title="Update"
+            onPress={this.updateTime.bind(this)}
           />
         </View>      
       </View>
@@ -66,6 +66,24 @@ export default class EditScreen extends Component {
     const time = this.props.navigation.getParam('time');
     const index = _.findIndex(data, { 'time': time.time, 'type': time.type });
     data.splice(index, 1);
+    TimeStore.storeData(data);
+    this.props.navigation.state.params.onGoBack();
+    this.props.navigation.goBack();
+  }
+
+  async updateTime() {
+    const date = this.state.date;
+    let data = await TimeStore.readData();
+
+    //Delete old
+    const time = this.props.navigation.getParam('time');
+    const index = _.findIndex(data, { 'time': time.time, 'type': time.type });
+    data.splice(index, 1);
+
+    //Add new
+    const timeJson = new Date(`${this.state.date} ${this.state.time}`).toJSON();
+    data.push({type: time.type, time: timeJson});
+
     TimeStore.storeData(data);
     this.props.navigation.state.params.onGoBack();
     this.props.navigation.goBack();
