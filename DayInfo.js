@@ -2,25 +2,35 @@ import React, {Component} from 'react';
 import {
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableHighlight
 } from 'react-native';
 import _ from 'lodash';
 import moment from 'moment';
 
-export default class DayInfo extends Component {
+import { createStackNavigator } from 'react-navigation';
+
+export default class DayInfo extends Component { 
   constructor(props){
     super(props);
   }
 
   render() {
+    const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
         <Text style={styles.day}>{this.props.day}</Text>
         <View>
           {this.orderTimes().map((time) =>
-          <Text key={time.time} style={styles.time}>
-            {this.formatTime(time.time)} {this.getEmoji(time.type)} {time.type}
-          </Text>)} 
+          <TouchableHighlight key={time.time} onPress={() => navigate('Edit', 
+            { onGoBack: this.props.refresh, time: time })} underlayColor="white">
+            <View style={styles.button}>
+              <Text style={styles.time}>
+                {this.formatTime(time.time)} {this.getEmoji(time.type)} {time.type}
+              </Text>
+            </View>
+          </TouchableHighlight>
+          )} 
         </View>
         <View>
           <Text style={styles.count}>🍼 {this.getCount("food")}</Text>
