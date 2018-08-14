@@ -66,17 +66,17 @@ export default class HomeScreen extends Component {
         </View>
         <View style={styles.buttonBar}>
           <Button
-            onPress={this.food.bind(this)}
+            onPress={() => await this.addTime("food")}
             title="🍼 Food"
             accessibilityLabel="Learn more about this purple button"
           />
           <Button
-            onPress={this.pee.bind(this)}
+            onPress={() => await this.addTime("pee")}
             title="💧 Pee"
             accessibilityLabel="Learn more about this purple button"
           />
           <Button
-            onPress={this.poo.bind(this)}
+            onPress={() => await this.addTime("poo")}
             title="💩 Poo"
             accessibilityLabel="Learn more about this purple button"
           />
@@ -114,18 +114,6 @@ export default class HomeScreen extends Component {
     //sort descending
     days.sort(function(a, b){return b - a});
     return days;
-  }
-
-  async food() {
-    await this.addTime("food");
-  }
-
-  async pee() {
-    await this.addTime("pee");
-  }
-
-  async poo() {
-    await this.addTime("poo");
   }
 
   async addTime(type) {
