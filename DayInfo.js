@@ -55,6 +55,7 @@ export default class DayInfo extends Component {
     return moment(time).format('HH:mm');
   }
 
+  //TODO: create enumeration for types
   getEmoji(type) {
     if (type === "food")
       return "🍼";
