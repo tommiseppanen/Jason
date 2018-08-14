@@ -9,6 +9,7 @@ import _ from 'lodash';
 import moment from 'moment';
 
 import { createStackNavigator } from 'react-navigation';
+import EditScreen from './EditScreen';
 
 export default class DayInfo extends Component { 
   constructor(props){
@@ -16,17 +17,15 @@ export default class DayInfo extends Component {
   }
 
   render() {
-    const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
         <Text style={styles.day}>{this.props.day}</Text>
         <View>
           {this.orderTimes().map((time) =>
-          <TouchableHighlight key={time.time} onPress={() => navigate('Edit', 
-            { onGoBack: this.props.refresh, time: time })} underlayColor="#0eaefc">
+          <TouchableHighlight key={time.time} onPress={() => this.openEditScreen(time)} underlayColor="#0eaefc">
             <View style={styles.button}>
               <Text style={styles.time}>
-                {this.formatTime(time.time)} {this.getEmoji(time.type)} {time.type}
+                {this.formatText(time)}
               </Text>
             </View>
           </TouchableHighlight>
@@ -41,6 +40,11 @@ export default class DayInfo extends Component {
       
       
     );
+  }
+
+  openEditScreen(time) {
+    EditScreen.navigationOptions.title = this.formatText(time);
+    this.props.navigation.navigate('Edit', { onGoBack: this.props.refresh, time: time});
   }
 
   orderTimes() {
@@ -64,6 +68,10 @@ export default class DayInfo extends Component {
 
   getCount(type) {
     return _.filter(this.props.times, (t) => { if (t.type === type) return t }).length;
+  }
+
+  formatText(time) {
+    return `${this.formatTime(time.time)} ${this.getEmoji(time.type)} ${time.type}`;
   }
 }
 
