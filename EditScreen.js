@@ -81,12 +81,19 @@ export default class EditScreen extends Component {
     data.splice(index, 1);
 
     //Add new
-    const timeJson = new Date(`${this.state.date} ${this.state.time}`).toJSON();
+    const timeJson = moment(`${this.state.date} ${this.state.time}:00.${this.getRandomMilliseconds()}`).toJSON();
+
     data.push({type: time.type, time: timeJson});
 
     TimeStore.storeData(data);
     this.props.navigation.state.params.onGoBack();
     this.props.navigation.goBack();
+  }
+
+  //Since we use timestamp as a kind of "key", 
+  //lets make sure we don't collide easily when defining times manually
+  getRandomMilliseconds() {
+    return Math.floor(Math.random()*900)+100;
   }
 }
 
