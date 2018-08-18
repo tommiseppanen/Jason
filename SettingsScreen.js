@@ -29,7 +29,7 @@ export default class SettingsScreen extends Component {
     super(props)
     //const date = new moment(this.props.navigation.getParam('time').time);
 
-    this.state = {date: "", time: ""};
+    this.state = {date: "", time: "", interval: 180};
   }
 
   render() {
@@ -53,13 +53,14 @@ export default class SettingsScreen extends Component {
           />
           <TextInput
             keyboardType="number-pad"
-            maxLength="2"
+            maxLength={2}
+            value={String(this.state.interval/60)}
           />
         </View>
         <View style={styles.buttonBar}>
           <Button
             title="Update"
-            onPress={this.updateTime.bind(this)}
+            onPress={this.updateSettigs.bind(this)}
           />
         </View>      
       </View>
