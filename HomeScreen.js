@@ -132,7 +132,7 @@ export default class HomeScreen extends Component {
       if (feedingTimes.length > 0)
       {
         const orderedTimes = _.orderBy(feedingTimes, ['time'], ['desc']);
-        return `Next feeding: ${moment(orderedTimes[0].time).add(feedingInterval, 'minutes').format('HH:mm')}`;
+        return `Next feeding ${moment(orderedTimes[0].time).add(feedingInterval, 'minutes').format('HH:mm')}`;
       }        
     }
     return "Welcome!";
