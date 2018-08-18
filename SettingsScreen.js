@@ -65,7 +65,7 @@ export default class SettingsScreen extends Component {
           </View>
         </View>
         <View style={styles.inputRow}>
-            <Text>Feeding interval (minutes)</Text>
+            <Text style={styles.intervalDescription}>Feeding interval (minutes)</Text>
             <TextInput
               keyboardType="numeric"
               maxLength={3}
@@ -102,8 +102,11 @@ const styles = StyleSheet.create({
     width: 200,
     padding: 10
   },
+  intervalDescription: {
+    paddingRight: 20
+  },
   inputRow: {
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     flexDirection: 'row',
