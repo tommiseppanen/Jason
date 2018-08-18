@@ -24,7 +24,7 @@ export default class TimeStore {
   }
 
   static async getSettings() {
-    let settings = {birthday: null, feedingInterval: null};
+    let settings = {birthday: null, feedingInterval: 180};
     try {            
       const value = await AsyncStorage.getItem(settingsKey);
       if (value !== null) {

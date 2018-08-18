@@ -26,10 +26,16 @@ export default class SettingsScreen extends Component {
   };
 
   constructor(props){
-    super(props)
-    //const date = new moment(this.props.navigation.getParam('time').time);
+    super(props);
+    this.state = {date: null, 
+      time: null, feedingInterval: ""};
+  }
 
-    this.state = {date: "", time: "", interval: 180};
+  async componentDidMount() {
+    const settings = await TimeStore.getSettings();
+    const date = moment(settings.birthday);
+    this.setState({date: date.format('YYYY-MM-DD'), 
+      time: date.format('HH:mm'), feedingInterval: String(settings.feedingInterval)});
   }
 
   render() {
@@ -51,46 +57,35 @@ export default class SettingsScreen extends Component {
             placeholder="Birth time"
             onDateChange={(time) => {this.setState({time: time})}}
           />
-          <TextInput
-            keyboardType="number-pad"
-            maxLength={2}
-            value={String(this.state.interval/60)}
-          />
         </View>
-        <View style={styles.buttonBar}>
-          <Button
-            title="Update"
-            onPress={this.updateSettigs.bind(this)}
-          />
-        </View>      
+        <View style={styles.inputRow}>
+            <Text>Feeding interval (minutes)</Text>
+            <TextInput
+              keyboardType="number-pad"
+              maxLength={3}
+              onChangeText={(interval) => {this.setState({feedingInterval: interval})}}
+              value={this.state.feedingInterval}
+            />
+          </View>    
       </View>
     );
   }
 
-  async updateSettigs() {
-    /*const date = this.state.date;
-    let data = await TimeStore.readData();
-
-    //Delete old
-    const time = this.props.navigation.getParam('time');
-    const index = _.findIndex(data, { 'time': time.time, 'type': time.type });
-    data.splice(index, 1);
-
-    //Add new
-    const timeJson = moment(`${this.state.date} ${this.state.time}:00.${this.getRandomMilliseconds()}`).toJSON();
-
-    data.push({type: time.type, time: timeJson});
-
-    TimeStore.storeData(data);
+  async componentWillUnmount() {
+    const settings = await TimeStore.getSettings();
+    const timeJson = moment(`${this.state.date} ${this.state.time}`).toJSON();
+    settings.birthday = timeJson;
+    const intervalValue = parseInt(this.state.feedingInterval);
+    settings.feedingInterval = _.isNumber(intervalValue) ? intervalValue : 180;
+    await TimeStore.storeSettings(settings);
     this.props.navigation.state.params.onGoBack();
-    this.props.navigation.goBack();*/
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems:'center',
+    alignItems:'flex-start',
     alignItems: 'stretch',
     backgroundColor: '#FFFFFF'
   },
@@ -101,9 +96,11 @@ const styles = StyleSheet.create({
     width: 200,
     padding: 10
   },
-  buttonBar: {
-    padding: 10,
+  inputRow: {
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    padding: 10
   }
 });

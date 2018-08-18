@@ -11,10 +11,9 @@ import {
   StyleSheet,
   Text,
   View,
-  StatusBar,
   Button,
   ScrollView,
-  TouchableHighlight
+  TouchableOpacity 
 } from 'react-native';
 import _ from 'lodash';
 import moment from 'moment';
@@ -23,14 +22,24 @@ import DayInfo from './DayInfo';
 import TimeStore from './TimeStore';
 
 export default class HomeScreen extends Component {
-  static navigationOptions = {
-    header: null
-  };
+  static navigationOptions = ({navigation}) => {
+    const {params = {}} = navigation.state;
+    return {
+      headerStyle: {
+        backgroundColor: '#2196f3',
+      },
+      title: params.title,
+      headerTintColor: '#fff',
+      headerRight: (<TouchableOpacity onPress={params.settingsAction}>
+                      <Text style={styles.topbarButton}>SETTINGS</Text>
+                    </TouchableOpacity>)
+
+    };
+};
   
   constructor(props){
     super(props);
     this.state = { times: {}}
-    this.birthTime = new moment(new Date(2012, 1, 2, 3, 4));
   }
 
   async componentDidMount() {
@@ -38,24 +47,44 @@ export default class HomeScreen extends Component {
   }
   
   async refreshState() {  
+    const settings = await this.readSettings();
     const data = await TimeStore.readData();
-    const settings = await TimeStore.getSettings();
-    this.setNewState(data);
+    this.setInitialState(data, moment(settings.birthday), settings.feedingInterval);
   }
 
-  async setNewState(data) {
-    const grouped = this.groupByDate(data);
+  async readSettings() {
+    const settings = await TimeStore.getSettings();
+    if (_.isNull(settings.birthday))
+    {
+      settings.birthday = new Date().toJSON();
+      await TimeStore.storeSettings(settings);
+    }
+    return settings;
+  }
+
+  async setInitialState(data, birthday, feedingInterval) {
+    const grouped = this.groupByDate(data, birthday);
+    this.setState({ times: grouped, birthday: birthday, 
+      feedingInterval: feedingInterval});
+    this.props.navigation.setParams({
+      title: this.getNextFeeding(feedingInterval),
+      settingsAction: () => this.props.navigation.navigate('Settings', { onGoBack: this.refreshState.bind(this)})
+    });
+  }
+
+  async updateState(data) {
+    const grouped = this.groupByDate(data, this.state.birthday);
     this.setState({ times: grouped});
     this.props.navigation.setParams({
-      title: this.getNextFeeding()
+      title: this.getNextFeeding(this.state.feedingInterval)
     });
   }
   
 
 
-  groupByDate(data) {
+  groupByDate(data, birthday) {
     return _.groupBy(data, value => {
-      var duration = moment.duration(moment(value.time).diff(this.birthTime));
+      var duration = moment.duration(moment(value.time).diff(birthday));
       return Math.floor(duration.asHours() / 24);
     });
   }
@@ -92,7 +121,7 @@ export default class HomeScreen extends Component {
     );
   }
 
-  getNextFeeding()
+  getNextFeeding(feedingInterval)
   {
     let days = this.getDays();
     if (days.length > 0)
@@ -102,7 +131,7 @@ export default class HomeScreen extends Component {
       if (feedingTimes.length > 0)
       {
         const orderedTimes = _.orderBy(feedingTimes, ['time'], ['desc']);
-        return `Next feeding: ${moment(orderedTimes[0].time).add(4, 'hours').format('HH:mm')}`;
+        return `Next feeding: ${moment(orderedTimes[0].time).add(feedingInterval, 'minutes').format('HH:mm')}`;
       }        
     }
     return "Welcome!";
@@ -119,23 +148,28 @@ export default class HomeScreen extends Component {
     let data = await TimeStore.readData();
     const currentTimeJson = new Date().toJSON(); 
     data.push({type: type, time: currentTimeJson});
-    this.setNewState(data);
+    this.updateState(data);
     TimeStore.storeData(data);
   }
 }
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'flex-start',
-      alignItems: 'stretch',
-      backgroundColor: '#FFFFFF',
-    },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+    backgroundColor: '#FFFFFF',
+  },
   buttonBar: {
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     flexDirection: 'row',
+    padding: 10
+  },
+  topbarButton: {
+    color: '#FFF',
+    fontWeight: 'bold',
     padding: 10
   }
 });
