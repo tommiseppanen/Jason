@@ -7,7 +7,8 @@ import {
   View,
   StatusBar,
   Button,
-  ScrollView
+  ScrollView,
+  TextInput
 } from 'react-native';
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment';
@@ -15,9 +16,9 @@ import _ from 'lodash';
 
 import TimeStore from './TimeStore';
 
-export default class EditScreen extends Component {
+export default class SettingsScreen extends Component {
   static navigationOptions = {
-    title: 'Edit',
+    title: 'Settings',
     headerStyle: {
       backgroundColor: '#2196f3',
     },
@@ -26,8 +27,9 @@ export default class EditScreen extends Component {
 
   constructor(props){
     super(props)
-    const date = new moment(this.props.navigation.getParam('time').time);
-    this.state = {date: date.format('YYYY-MM-DD'), time: date.format('HH:mm')};
+    //const date = new moment(this.props.navigation.getParam('time').time);
+
+    this.state = {date: "", time: ""};
   }
 
   render() {
@@ -38,7 +40,7 @@ export default class EditScreen extends Component {
             style={styles.datePicker}
             mode="date"
             date={this.state.date}
-            placeholder="Select date"
+            placeholder="Birthday"
             onDateChange={(date) => {this.setState({date: date})}}
           />
           <DatePicker
@@ -46,15 +48,15 @@ export default class EditScreen extends Component {
             mode="time"
             format="HH:mm"
             date={this.state.time}
-            placeholder="Select time"
+            placeholder="Birth time"
             onDateChange={(time) => {this.setState({time: time})}}
+          />
+          <TextInput
+            keyboardType="number-pad"
+            maxLength="2"
           />
         </View>
         <View style={styles.buttonBar}>
-          <Button
-            title="Delete"
-            onPress={this.deleteTime.bind(this)}
-          />
           <Button
             title="Update"
             onPress={this.updateTime.bind(this)}
@@ -64,18 +66,8 @@ export default class EditScreen extends Component {
     );
   }
 
-  async deleteTime() {
-    let data = await TimeStore.readData();
-    const time = this.props.navigation.getParam('time');
-    const index = _.findIndex(data, { 'time': time.time, 'type': time.type });
-    data.splice(index, 1);
-    TimeStore.storeData(data);
-    this.props.navigation.state.params.onGoBack();
-    this.props.navigation.goBack();
-  }
-
-  async updateTime() {
-    const date = this.state.date;
+  async updateSettigs() {
+    /*const date = this.state.date;
     let data = await TimeStore.readData();
 
     //Delete old
@@ -90,13 +82,7 @@ export default class EditScreen extends Component {
 
     TimeStore.storeData(data);
     this.props.navigation.state.params.onGoBack();
-    this.props.navigation.goBack();
-  }
-
-  //Since we use timestamp as a kind of "key", 
-  //lets make sure we don't collide easily when defining times manually
-  getRandomMilliseconds() {
-    return Math.floor(Math.random()*900)+100;
+    this.props.navigation.goBack();*/
   }
 }
 

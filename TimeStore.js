@@ -3,6 +3,7 @@ import {
 } from 'react-native';
 
 const dataKey = 'times';
+const settingsKey = 'settings';
 
 export default class TimeStore {
   static async readData() {
@@ -20,5 +21,22 @@ export default class TimeStore {
 
   static async storeData(data) {
     await AsyncStorage.setItem(dataKey, JSON.stringify(data));
+  }
+
+  static async getSettings() {
+    let settings = {birthday: null, feedingInterval: null};
+    try {            
+      const value = await AsyncStorage.getItem(settingsKey);
+      if (value !== null) {
+        settings = JSON.parse(value); 
+      }
+    } catch (error) {
+      console.log(error);
+    } 
+    return settings;
+  }
+
+  static async storeSettings(settings) {
+    await AsyncStorage.setItem(settingsKey, JSON.stringify(settings));
   }
 }

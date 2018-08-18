@@ -14,6 +14,7 @@ import {
   StatusBar,
   Button,
   ScrollView,
+  TouchableHighlight
 } from 'react-native';
 import _ from 'lodash';
 import moment from 'moment';
@@ -38,12 +39,16 @@ export default class HomeScreen extends Component {
   
   async refreshState() {  
     const data = await TimeStore.readData();
+    const settings = await TimeStore.getSettings();
     this.setNewState(data);
   }
 
   async setNewState(data) {
     const grouped = this.groupByDate(data);
     this.setState({ times: grouped});
+    this.props.navigation.setParams({
+      title: this.getNextFeeding()
+    });
   }
   
 
@@ -58,25 +63,19 @@ export default class HomeScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor="#3F6B9C"/>
-        <View style={styles.topBar}>
-          <Text style={styles.header}>
-            {this.getNextFeeding()}
-          </Text>
-        </View>
         <View style={styles.buttonBar}>
           <Button
-            onPress={() => await this.addTime("food")}
+            onPress={() => this.addTime("food")}
             title="🍼 Food"
             accessibilityLabel="Learn more about this purple button"
           />
           <Button
-            onPress={() => await this.addTime("pee")}
+            onPress={() => this.addTime("pee")}
             title="💧 Pee"
             accessibilityLabel="Learn more about this purple button"
           />
           <Button
-            onPress={() => await this.addTime("poo")}
+            onPress={() => this.addTime("poo")}
             title="💩 Poo"
             accessibilityLabel="Learn more about this purple button"
           />
@@ -138,21 +137,5 @@ export default class HomeScreen extends Component {
     backgroundColor: '#FFFFFF',
     flexDirection: 'row',
     padding: 10
-  },
-  topBar: {
-    backgroundColor: '#039BE5',
-    alignSelf: 'stretch',
-    padding: 10,
-  },
-  header: {
-    fontSize: 22,
-    textAlign: 'center',
-    margin: 10,
-    color: 'white',
-  },
-  startTime: {
-    textAlign: 'center',
-    color: '#333333',
-    margin: 5,
-  },
+  }
 });
