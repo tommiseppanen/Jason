@@ -31,7 +31,7 @@ export default class DayInfo extends Component {
           </TouchableHighlight>
           )} 
         </View>
-        <View>
+        <View style={styles.countContainer}>
           <Text style={styles.count}>🍼 {this.getCount("food")}</Text>
           <Text style={styles.count}>💧 {this.getCount("pee")}</Text>
           <Text style={styles.count}>💩 {this.getCount("poo")}</Text>
@@ -81,17 +81,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     flexDirection: 'row',
-    padding: 10
+    padding: 10,
+    marginBottom: 10
   },
   day: {
     fontSize: 80,
     color: '#00000018',
-    lineHeight: 80
+    lineHeight: 80,
+    minWidth: 90
   },
   count: {
     fontSize: 30,
     color: 'black'
   },
+  countContainer: {
+    minWidth: 70
+  }, 
   time: {
     color: 'black'
   },

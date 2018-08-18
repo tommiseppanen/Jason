@@ -42,26 +42,32 @@ export default class SettingsScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.pickerContainer}>
-          <DatePicker
-            style={styles.datePicker}
-            mode="date"
-            date={this.state.date}
-            placeholder="Birthday"
-            onDateChange={(date) => {this.setState({date: date})}}
-          />
-          <DatePicker
-            style={styles.datePicker}
-            mode="time"
-            format="HH:mm"
-            date={this.state.time}
-            placeholder="Birth time"
-            onDateChange={(time) => {this.setState({time: time})}}
-          />
+          <View style={styles.inputRow}>
+            <Text>Birthday</Text>
+            <DatePicker
+              style={styles.datePicker}
+              mode="date"
+              date={this.state.date}
+              placeholder="Birthday"
+              onDateChange={(date) => {this.setState({date: date})}}
+            />
+          </View>
+          <View style={styles.inputRow}>
+            <Text>Birth time</Text>
+            <DatePicker
+              style={styles.datePicker}
+              mode="time"
+              format="HH:mm"
+              date={this.state.time}
+              placeholder="Birth time"
+              onDateChange={(time) => {this.setState({time: time})}}
+            />
+          </View>
         </View>
         <View style={styles.inputRow}>
             <Text>Feeding interval (minutes)</Text>
             <TextInput
-              keyboardType="number-pad"
+              keyboardType="numeric"
               maxLength={3}
               onChangeText={(interval) => {this.setState({feedingInterval: interval})}}
               value={this.state.feedingInterval}
