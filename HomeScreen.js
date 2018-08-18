@@ -13,7 +13,8 @@ import {
   View,
   Button,
   ScrollView,
-  TouchableOpacity 
+  TouchableOpacity,
+  Image
 } from 'react-native';
 import _ from 'lodash';
 import moment from 'moment';
@@ -31,7 +32,7 @@ export default class HomeScreen extends Component {
       title: params.title,
       headerTintColor: '#fff',
       headerRight: (<TouchableOpacity onPress={params.settingsAction}>
-                      <Text style={styles.topbarButton}>SETTINGS</Text>
+                      <Image style={styles.topbarButton} source={require('./img/settings.png')} />
                     </TouchableOpacity>)
 
     };
@@ -168,8 +169,7 @@ const styles = StyleSheet.create({
     padding: 10
   },
   topbarButton: {
-    color: '#FFF',
-    fontWeight: 'bold',
-    padding: 10
+    tintColor: '#FFF',
+    marginRight: 10
   }
 });
