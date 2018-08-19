@@ -11,6 +11,8 @@ import moment from 'moment';
 import { createStackNavigator } from 'react-navigation';
 import EditScreen from './EditScreen';
 
+import { strings } from './locales/i18n';
+
 export default class DayInfo extends Component { 
   constructor(props){
     super(props);
@@ -58,11 +60,11 @@ export default class DayInfo extends Component {
   //TODO: create enumeration for types
   getEmoji(type) {
     if (type === "food")
-      return "🍼";
+      return `🍼 ${strings('home.food')}`;
     else if (type === "pee")
-      return "💧";
+      return `💧 ${strings('home.pee')}`;
     else if (type === "poo")
-      return "💩";
+      return `💩 ${strings('home.poo')}`;
 
     return "";  
   }
@@ -72,7 +74,7 @@ export default class DayInfo extends Component {
   }
 
   formatText(time) {
-    return `${this.formatTime(time.time)} ${this.getEmoji(time.type)} ${time.type}`;
+    return `${this.formatTime(time.time)} ${this.getEmoji(time.type)}`;
   }
 }
 

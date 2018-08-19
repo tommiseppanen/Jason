@@ -1,0 +1,18 @@
+{
+  "home": {
+    "pee": "Pee",
+    "poo": "Poo",
+    "food": "Food",
+	"nextFeeding": "Next feeding"
+  },
+  "edit": {
+    "save": "Save changes",
+	"delete": "Delete",	
+  },
+  "settings": {
+    "settings": "Settings",
+	"birthday": "Birthday",
+	"birthTime": "Birth time",
+	"feedingInterval": "Feeding interval (minutes)",
+  }
+}

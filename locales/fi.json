@@ -1,0 +1,18 @@
+{
+  "home": {
+    "pee": "Pissa",
+    "poo": "Kakka",
+    "food": "Ruoka",
+	"nextFeeding": "Seuraava ruokinta"
+  },
+  "edit": {
+    "save": "Tallenna muutokset",
+	"delete": "Poista",	
+  },
+  "settings": {
+    "settings": "Asetukset",
+	"birthday": "Syntymäpäivä",
+	"birthTime": "Syntymäaika",
+	"feedingInterval": "Ruokintaväli (minuuteissa)",
+  }
+}

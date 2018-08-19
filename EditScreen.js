@@ -15,9 +15,11 @@ import _ from 'lodash';
 
 import TimeStore from './TimeStore';
 
+import { strings } from './locales/i18n';
+
 export default class EditScreen extends Component {
   static navigationOptions = {
-    title: 'Edit',
+    title: '',
     headerStyle: {
       backgroundColor: '#2196f3',
     },
@@ -52,11 +54,11 @@ export default class EditScreen extends Component {
         </View>
         <View style={styles.buttonBar}>
           <Button
-            title="Delete"
+            title={strings('edit.delete')}
             onPress={this.deleteTime.bind(this)}
           />
           <Button
-            title="Update"
+            title={strings('edit.save')}
             onPress={this.updateTime.bind(this)}
           />
         </View>      

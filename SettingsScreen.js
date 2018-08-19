@@ -16,9 +16,11 @@ import _ from 'lodash';
 
 import TimeStore from './TimeStore';
 
+import { strings } from './locales/i18n';
+
 export default class SettingsScreen extends Component {
   static navigationOptions = {
-    title: 'Settings',
+    title: strings('settings.settings'),
     headerStyle: {
       backgroundColor: '#2196f3',
     },
@@ -43,29 +45,29 @@ export default class SettingsScreen extends Component {
       <View style={styles.container}>
         <View style={styles.pickerContainer}>
           <View style={styles.inputRow}>
-            <Text>Birthday</Text>
+            <Text>{strings('settings.birthday')}</Text>
             <DatePicker
               style={styles.datePicker}
               mode="date"
               date={this.state.date}
-              placeholder="Birthday"
+              placeholder={strings('settings.birthday')}
               onDateChange={(date) => {this.setState({date: date})}}
             />
           </View>
           <View style={styles.inputRow}>
-            <Text>Birth time</Text>
+            <Text>{strings('settings.birthTime')}</Text>
             <DatePicker
               style={styles.datePicker}
               mode="time"
               format="HH:mm"
               date={this.state.time}
-              placeholder="Birth time"
+              placeholder={strings('settings.birthTime')}
               onDateChange={(time) => {this.setState({time: time})}}
             />
           </View>
         </View>
         <View style={styles.inputRow}>
-            <Text style={styles.intervalDescription}>Feeding interval (minutes)</Text>
+            <Text style={styles.intervalDescription}>{strings('settings.feedingInterval')}</Text>
             <TextInput
               keyboardType="numeric"
               maxLength={3}

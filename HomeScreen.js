@@ -22,6 +22,8 @@ import moment from 'moment';
 import DayInfo from './DayInfo';
 import TimeStore from './TimeStore';
 
+import { strings } from './locales/i18n';
+
 export default class HomeScreen extends Component {
   static navigationOptions = ({navigation}) => {
     const {params = {}} = navigation.state;
@@ -96,18 +98,18 @@ export default class HomeScreen extends Component {
         <View style={styles.buttonBar}>
           <Button
             onPress={() => this.addTime("food")}
-            title="🍼 Food"
-            accessibilityLabel="Learn more about this purple button"
+            title={`🍼 ${strings('home.food')}`}
+            accessibilityLabel={strings('home.food')}
           />
           <Button
             onPress={() => this.addTime("pee")}
-            title="💧 Pee"
-            accessibilityLabel="Learn more about this purple button"
+            title={`💧 ${strings('home.pee')}`}
+            accessibilityLabel={strings('home.pee')}
           />
           <Button
             onPress={() => this.addTime("poo")}
-            title="💩 Poo"
-            accessibilityLabel="Learn more about this purple button"
+            title={`💩 ${strings('home.poo')}`}
+            accessibilityLabel={strings('home.poo')}
           />
         </View>
         <ScrollView>
@@ -132,10 +134,10 @@ export default class HomeScreen extends Component {
       if (feedingTimes.length > 0)
       {
         const orderedTimes = _.orderBy(feedingTimes, ['time'], ['desc']);
-        return `Next feeding ${moment(orderedTimes[0].time).add(feedingInterval, 'minutes').format('HH:mm')}`;
+        return `${strings('home.nextFeeding')} ${moment(orderedTimes[0].time).add(feedingInterval, 'minutes').format('HH:mm')}`;
       }        
     }
-    return "Welcome!";
+    return "";
   }
 
   getDays() {
