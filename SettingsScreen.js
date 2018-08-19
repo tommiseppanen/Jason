@@ -1,13 +1,9 @@
 import React, {Component} from 'react';
 import {
-  AsyncStorage,
-  Platform,
   StyleSheet,
   Text,
   View,
-  StatusBar,
   Button,
-  ScrollView,
   TextInput
 } from 'react-native';
 import DatePicker from 'react-native-datepicker'

@@ -7,14 +7,14 @@
 
 import React, {Component} from 'react';
 import {
-  Platform,
   StyleSheet,
   Text,
   View,
   Button,
   FlatList,
   TouchableOpacity,
-  Image
+  Image,
+  StatusBar
 } from 'react-native';
 import _ from 'lodash';
 import moment from 'moment';
@@ -95,6 +95,7 @@ export default class HomeScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar backgroundColor="#1976D2"/>
         <View style={styles.buttonBar}>
           <Button
             onPress={() => this.addTime("food")}
