@@ -12,7 +12,7 @@ import {
   Text,
   View,
   Button,
-  ScrollView,
+  FlatList,
   TouchableOpacity,
   Image
 } from 'react-native';
@@ -112,14 +112,15 @@ export default class HomeScreen extends Component {
             accessibilityLabel={strings('home.poo')}
           />
         </View>
-        <ScrollView>
-          {this.getDays().map((key) =>
-            <DayInfo key={key} day={parseInt(key)+1} 
-            times={this.state.times[key]} navigation={this.props.navigation}
-            refresh={this.refreshState.bind(this)}></DayInfo>)}
-        </ScrollView>
-        
-        
+        <FlatList
+          data={this.getDays()}
+          keyExtractor={(item,index) => item.toString()}
+          renderItem={({item}) => 
+          <DayInfo day={parseInt(item)+1} 
+            times={this.state.times[item]} navigation={this.props.navigation}
+            refresh={this.refreshState.bind(this)}>
+          </DayInfo>}
+        />       
       </View>
     );
   }
