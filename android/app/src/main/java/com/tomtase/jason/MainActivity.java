@@ -1,4 +1,4 @@
-package com.jason;
+package com.tomtase.jason;
 
 import com.facebook.react.ReactActivity;
 

@@ -1,4 +1,4 @@
-package com.jason;
+package com.tomtase.jason;
 
 import android.app.Application;
 
