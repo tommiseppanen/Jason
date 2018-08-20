@@ -76,7 +76,7 @@ export default class HomeScreen extends Component {
   }
 
   async updateStateWithNewItem(item) {
-    const key = getDaysSinceBirthday(item, this.state.birthday);
+    const key = this.getDaysSinceBirthday(item, this.state.birthday);
     let times = this.state.times;
     if (!(key.toString() in times)) {
       times[key] = [];
@@ -92,7 +92,7 @@ export default class HomeScreen extends Component {
 
 
   groupByDate(data, birthday) {
-    return _.groupBy(data, value => getDaysSinceBirthday(value, birthday));
+    return _.groupBy(data, value => this.getDaysSinceBirthday(value, birthday));
   }
 
   getDaysSinceBirthday(item, birthday) {
@@ -160,7 +160,7 @@ export default class HomeScreen extends Component {
   async addTime(type) {
     const currentTimeJson = new Date().toJSON();
     const newEntry = {type: type, time: currentTimeJson};
-    this.updateStateWithNewItem(data);
+    this.updateStateWithNewItem(newEntry);
 
     //store to disk
     let data = await TimeStore.readData();    
