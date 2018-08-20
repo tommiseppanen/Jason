@@ -2,7 +2,6 @@
     xmlns:tools="http://schemas.android.com/tools"
 	package="com.tomtase.jason">
 
-	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" tools:node="remove"/>
 
     <application

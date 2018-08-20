@@ -101,7 +101,7 @@ android {
         applicationId "com.tomtase.jason"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
+        versionCode 4
         versionName "1.0"
         ndk {
             abiFilters "armeabi-v7a", "x86"
@@ -126,11 +126,7 @@ android {
         }
     }
     buildTypes {
-        debug {
-            manifestPlaceholders = [excludeSystemAlertWindowPermission: "false"]
-		}
         release {
-            manifestPlaceholders = [excludeSystemAlertWindowPermission: "true"]
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
             signingConfig signingConfigs.release
