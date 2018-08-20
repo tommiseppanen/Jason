@@ -137,10 +137,10 @@ export default class HomeScreen extends Component {
   getNextFeeding(feedingInterval)
   {
     let days = this.getDays();
-    if (days.length > 0)
+    for (let i = 0; i < days.length; i++)
     {
       const feedingTimes = 
-        _.filter(this.state.times[days[0]], (t) => { if (t.type === "food") return t });
+        _.filter(this.state.times[days[i]], (t) => { if (t.type === "food") return t });
       if (feedingTimes.length > 0)
       {
         const orderedTimes = _.orderBy(feedingTimes, ['time'], ['desc']);
