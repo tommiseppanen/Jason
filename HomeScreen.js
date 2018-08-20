@@ -75,9 +75,15 @@ export default class HomeScreen extends Component {
     });
   }
 
-  async updateState(data) {
-    const grouped = this.groupByDate(data, this.state.birthday);
-    this.setState({ times: grouped});
+  async updateStateWithNewItem(item) {
+    const key = getDaysSinceBirthday(item, this.state.birthday);
+    let times = this.state.times;
+    if (!(key.toString() in times)) {
+      times[key] = [];
+    }
+    times[key].push(item);
+
+    this.setState({ times: times});
     this.props.navigation.setParams({
       title: this.getNextFeeding(this.state.feedingInterval)
     });
@@ -86,10 +92,12 @@ export default class HomeScreen extends Component {
 
 
   groupByDate(data, birthday) {
-    return _.groupBy(data, value => {
-      var duration = moment.duration(moment(value.time).diff(birthday));
-      return Math.floor(duration.asHours() / 24);
-    });
+    return _.groupBy(data, value => getDaysSinceBirthday(value, birthday));
+  }
+
+  getDaysSinceBirthday(item, birthday) {
+    var duration = moment.duration(moment(item.time).diff(birthday));
+    return Math.floor(duration.asHours() / 24);
   }
 
   render() {
@@ -150,11 +158,14 @@ export default class HomeScreen extends Component {
   }
 
   async addTime(type) {
-    let data = await TimeStore.readData();
-    const currentTimeJson = new Date().toJSON(); 
-    data.push({type: type, time: currentTimeJson});
-    this.updateState(data);
-    TimeStore.storeData(data);
+    const currentTimeJson = new Date().toJSON();
+    const newEntry = {type: type, time: currentTimeJson};
+    this.updateStateWithNewItem(data);
+
+    //store to disk
+    let data = await TimeStore.readData();    
+    data.push(newEntry);    
+    await TimeStore.storeData(data);
   }
 }
 
